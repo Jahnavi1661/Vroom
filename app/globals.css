@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #EDEAFB;
+  color: #15151C;
+}
+
+::selection {
+  background: #CFF24E;
+  color: #15151C;
+}
+
+:focus-visible {
+  outline: 2px solid #7C6FF0;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.card-shadow {
+  box-shadow: 0 24px 48px -22px rgba(76, 63, 168, 0.28);
+}
+
+.phone-frame {
+  box-shadow: 0 30px 60px -20px rgba(60, 45, 150, 0.35);
+}
