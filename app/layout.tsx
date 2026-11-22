@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Chalo — 2-wheeler rides across the city",
+  title: "Vroom — 2-wheeler rides across the city",
   description: "Book a bike or scooter ride in minutes, or ride your own and earn.",
 };
 
