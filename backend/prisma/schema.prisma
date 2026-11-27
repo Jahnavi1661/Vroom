@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  RIDER
+  DRIVER
+}
+
+enum VehicleType {
+  BIKE
+  SCOOTER
+  PREMIUM_MOTO
+}
+
+enum RideStatus {
+  REQUESTED
+  ACCEPTED
+  ARRIVED
+  STARTED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  passwordHash  String
+  role          Role           @default(RIDER)
+  createdAt     DateTime       @default(now())
+  driverProfile DriverProfile?
+  rides         Ride[]         @relation("RiderRides")
+}
+
+model DriverProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  isAvailable Boolean  @default(false)
+  lat         Float?
+  lng         Float?
+  vehicle     Vehicle?
+  rides       Ride[]   @relation("DriverRides")
+}
+
+model Vehicle {
+  id          String        @id @default(uuid())
+  driverId    String        @unique
+  driver      DriverProfile @relation(fields: [driverId], references: [id])
+  type        VehicleType
+  model       String
+  plateNumber String        @unique
+}
+
+model Ride {
+  id            String         @id @default(uuid())
+  riderId       String
+  rider         User           @relation("RiderRides", fields: [riderId], references: [id])
+  driverId      String?
+  driver        DriverProfile? @relation("DriverRides", fields: [driverId], references: [id])
+  pickupAddress String
+  dropAddress   String
+  pickupLat     Float
+  pickupLng     Float
+  dropLat       Float
+  dropLng       Float
+  distanceKm    Float
+  vehicleType   VehicleType
+  fareEstimate  Int
+  status        RideStatus     @default(REQUESTED)
+  createdAt     DateTime       @default(now())
+
+  @@index([status])
+  @@index([riderId])
+  @@index([driverId])
+}
